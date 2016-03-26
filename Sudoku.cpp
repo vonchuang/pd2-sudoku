@@ -345,13 +345,26 @@ void Sudoku::solve(){
 		}
 	}
 	//backtracking-------------------------------------
-	int flag=0;
+	int flag=0,fgr[10]={0},fgc[10]={0},gr,gc;
+	for(i=0;i<9;++i){	//check row and col----------------
+		for(j=0;j<9;++j){
+			gr=map[i*9+j];
+			gc=map[i+j*9];
+			if(gr!=0) fgr[gr]++;
+			if(fgr[gr]==2){ flag=1; break;}
+			if(gc!=0) fgc[gc]++;
+			if(fgc[gc]==2){ flag=1; break;}
+		}
+		for(j=0;j<10;++j){fgr[j]=0;  fgc[j]=0;}
+	}
+
 	for(i=0;i<size;i++){
 		if(map[i]==0 && ch[i].empty()) flag=1;
 	}
 
 	
 	if(flag==0) backtrack(0);
+
 	if(sol==0) printf("0\n");
 	else if(sol==2) printf("2\n");
 	else if(sol==1){

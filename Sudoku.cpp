@@ -215,15 +215,15 @@ bool Sudoku::check(int a,int i){
 void Sudoku::backtrack(int a){
 	int i,j,in,n;
 	in=index[a];
-/*	if(a==(size-1) && ch[in].empty()){
+	if(a==(size-1) && ch[in].empty()){
 		++sol;
 		for(i=0;i<size;++i) map2[i]=map[i];
 	}
-*/	if(sol==2){
+	if(sol==2){
 		return;
 	}
 
-	if(ch[in].empty()) backtrack(a+1);
+	if(a!=(size-1) && ch[in].empty()) backtrack(a+1);
 	else{
 		for(i=0;i<ch[in].size();++i){
 			if(a==(size-1) && check(in,i)){

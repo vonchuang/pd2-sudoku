@@ -213,19 +213,20 @@ bool Sudoku::check(int a,int i){
 }
 
 void Sudoku::backtrack(int a){
-	int i,j;
-	if(a==(size-1) && ch[a].empty()){
+	int i,j,in,n;
+	in=index[a];
+/*	if(a==(size-1) && ch[in].empty()){
 		++sol;
 		for(i=0;i<size;++i) map2[i]=map[i];
 	}
-	if(sol==2){
+*/	if(sol==2){
 		return;
 	}
 
-	if(a!=(size-1) && ch[a].empty()) backtrack(a+1);
+	if(ch[in].empty()) backtrack(a+1);
 	else{
-		for(i=0;i<ch[a].size();++i){
-			if(a==(size-1) && check(a,i)){
+		for(i=0;i<ch[in].size();++i){
+			if(a==(size-1) && check(in,i)){
 				++sol;
 				if(sol==1){
 					for(j=0;j<size;++j) map2[j]=map[j];
@@ -233,15 +234,16 @@ void Sudoku::backtrack(int a){
 			}
 			if(a!=(size-1)){
 				for(j=a;j<size;++j){
-					if(ck[j]==1){
-						map[j]=0;
-						ck[j]=0;
+					n=index[j];
+					if(ck[n]==1){
+						map[n]=0;
+						ck[n]=0;
 					}
 				}
 			}
 	
-			if(ch[a][i]!=0){
-				if(check(a,i)){
+			if(ch[in][i]!=0){
+				if(check(in,i)){
 					backtrack(a+1);
 				}
 			}
@@ -357,7 +359,7 @@ void Sudoku::solve(){
 		}
 	}
 	//backtracking-------------------------------------
-	int flag=0,fgr[10]={0},fgc[10]={0},gr,gc;
+	int flag=0,fgr[10]={0},fgc[10]={0},gr,gc,in[81]={0};
 
 	for(i=0;i<9;++i){	//check row and col----------------
 		for(j=0;j<9;++j){
@@ -376,7 +378,17 @@ void Sudoku::solve(){
 	}
 
 	
-	if(flag==0) backtrack(0);
+	if(flag==0){
+		for(i=0;i<10;++i){
+			for(j=0;j<size;++j){
+				if(in[j]==0 && ch[j].size()==i){
+					index.push_back(j);
+					in[j]=1;
+				}
+			}
+		}
+		backtrack(0);
+	}
 
 	if(sol==0) printf("0\n");
 	else if(sol==2) printf("2\n");

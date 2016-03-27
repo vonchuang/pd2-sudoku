@@ -27,5 +27,5 @@ class Sudoku{
 		int sol;
 		int ck[size];
 		vector<int>ch[size];
-
+		vector<int>index;
 };

@@ -157,23 +157,17 @@ void Sudoku::giveQuestion(){
 
 
 bool Sudoku::check(int a,int i){
-	int j,r,c,b;
-
-	//check colume
+	int j,r,c,b,b1,b2,b3;
+	
+	//col
 	c=(a+1)%9-1;
 	if((a+1)%9==0) c=8;
-	for(j=c;j<size;j+=9){	
-		if(ch[a][i]==map[j]) return false;
-	}
 	
-	//check row
+	//row
 	r=((a+1)/9)*9;	
 	if((a+1)%9==0) r=r-9;
-	for(j=r;j<(r+9);++j){
-		if(ch[a][i]==map[j]) return false;
-	}
-
-	//check block
+	
+	//block
 	if((a+1)%9!=0 && (a+1)%9<4){		
 		if(a<21)	  b=0;
 		else if(a<48) b=27;
@@ -188,15 +182,29 @@ bool Sudoku::check(int a,int i){
 		else if(a<54) b=33;
 		else if(a<81) b=60;
 	}
+	b1=b;
+	b2=b+9;
+	b3=b+18;
 
-	for(j=b;j<(b+3);++j){
-		if(ch[a][i]==map[j]) return false;
-	}
-	for(j=(b+9);j<(b+12);++j){
-		if(ch[a][i]==map[j]) return false;
-	}
-	for(j=(b+18);j<(b+21);++j){
-		if(ch[a][i]==map[j]) return false;
+	for(j=0;j<3;++j){
+		if(ch[a][i]==map[c]) return false;
+		c+=9;
+		if(ch[a][i]==map[c]) return false;
+		c+=9;
+		if(ch[a][i]==map[c]) return false;
+		c+=9;
+		if(ch[a][i]==map[r]) return false;
+		++r;
+		if(ch[a][i]==map[r]) return false;
+		++r;
+		if(ch[a][i]==map[r]) return false;
+		++r;
+		if(ch[a][i]==map[b1]) return false;
+		if(ch[a][i]==map[b2]) return false;
+		if(ch[a][i]==map[b3]) return false;
+		b1++;
+		b2++;
+		b3++;
 	}
 	//------------------------------------
 	ck[a]=1;
@@ -258,29 +266,33 @@ void Sudoku::solve(){
 	//possible numbers.
 	for(i=0;i<size;++i){
 		if(map[i]==0){
-			//----------------------------------------
+			
 			c=(i+1)%9-1;	//check colume
 			if((i+1)%9==0) c=8;
-			for(j=c;j<size;j+=9){	
-				tmp=map[j];
-				if(tmp!=0 && t[tmp]==0){
-					t[tmp]=1;
-					if(tmp!=9) ch[i].erase(ch[i].begin()+(tmp-1));
-					if(tmp==9) ch[i].pop_back();
-					ch[i].insert(ch[i].begin()+tmp-1,0);
-				}
-			}
-			//-----------------------------------------
+			
 			r=((i+1)/9)*9;	//check row
 			if((i+1)%9==0) r=r-9;
-			for(j=r;j<(r+9);++j){
-				tmp=map[j];
+			
+			for(j=0;j<9;++j){
+				//check col
+				tmp=map[c];
+				if(tmp!=0 && t[tmp]==0){
+					t[tmp]=1;
+					if(tmp!=9) ch[i].erase(ch[i].begin()+(tmp-1));
+					if(tmp==9) ch[i].pop_back();
+					ch[i].insert(ch[i].begin()+tmp-1,0);
+				}
+				c+=9;
+
+				//check row
+				tmp=map[r];
 				if(tmp!=0 && t[tmp]==0){
 					t[tmp]=1;
 					if(tmp==9) ch[i].pop_back();
 					if(tmp!=9) ch[i].erase(ch[i].begin()+(tmp-1));
 					ch[i].insert(ch[i].begin()+tmp-1,0);
 				}
+				++r;
 			}
 			//-----------------------------------------
 			if((i+1)%9!=0 && (i+1)%9<4){		//check block
@@ -346,6 +358,7 @@ void Sudoku::solve(){
 	}
 	//backtracking-------------------------------------
 	int flag=0,fgr[10]={0},fgc[10]={0},gr,gc;
+
 	for(i=0;i<9;++i){	//check row and col----------------
 		for(j=0;j<9;++j){
 			gr=map[i*9+j];

@@ -10,8 +10,8 @@ class Sudoku{
 		Sudoku();
 		void giveQuestion();
 		void readIn();
-		bool check(int a,int i);
-		void backtrack(int a);
+		bool check(int & a,int & i);
+		void backtrack(int & a);
 		void solve();
 		void changeNum(int a,int b);
 		void changeRow(int a,int b);

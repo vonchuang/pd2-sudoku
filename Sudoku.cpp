@@ -156,7 +156,7 @@ void Sudoku::giveQuestion(){
 
 
 
-bool Sudoku::check(int a,int i){
+bool Sudoku::check(int& a,int& i){
 	int j,r,c,b,b1,b2,b3;
 	
 	//col
@@ -212,8 +212,8 @@ bool Sudoku::check(int a,int i){
 	return true;
 }
 
-void Sudoku::backtrack(int a){
-	int i,j,in,n;
+void Sudoku::backtrack(int& a){
+	int i,j,in,n,aa=a+1;
 	in=index[a];
 	if(a==(size-1) && ch[in].empty()){
 		++sol;
@@ -223,7 +223,7 @@ void Sudoku::backtrack(int a){
 		return;
 	}
 
-	if(a!=(size-1) && ch[in].empty()) backtrack(a+1);
+	if(a!=(size-1) && ch[in].empty()) backtrack(aa);
 	else{
 		for(i=0;i<ch[in].size();++i){
 			if(a==(size-1) && check(in,i)){
@@ -244,7 +244,7 @@ void Sudoku::backtrack(int a){
 	
 			if(ch[in][i]!=0){
 				if(check(in,i)){
-					backtrack(a+1);
+					backtrack(aa);
 				}
 			}
 
@@ -379,6 +379,7 @@ void Sudoku::solve(){
 
 	
 	if(flag==0){
+		
 		for(i=0;i<10;++i){
 			for(j=0;j<size;++j){
 				if(in[j]==0 && ch[j].size()==i){
@@ -387,7 +388,8 @@ void Sudoku::solve(){
 				}
 			}
 		}
-		backtrack(0);
+		int tt=0;
+		backtrack(tt);
 	}
 
 	if(sol==0) printf("0\n");

@@ -19,7 +19,6 @@ class Sudoku{
 		void rotate(int n);
 		void flip(int n);
 		void transform();
-		void printmap();
 		static const int size=81;
 	private:
 		int map2[size];

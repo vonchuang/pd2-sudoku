@@ -31,37 +31,35 @@ void Sudoku::changeRow(int a,int b){
 }
 
 void Sudoku::changeCol(int a,int b){
-	int i,j,c,tmp;
+	int i,j,c1,c2,c3,tmp;
 
-	c=b*3;
-	for(i=a*3;i<size;i+=9){
-		tmp=map[i];
-		map[i]=map[c];
-		map[c]=tmp;
-		c+=9;
+	c1=b*3;
+	c2=b*3+1;
+	c3=b*3+2;
+	for(i=0;i<9;++i){
+		j=a*3+i*9;
+		tmp=map[j];
+		map[j]=map[c1];
+		map[c1]=tmp;
+		c1+=9;
+		
+		j=a*3+1+i*9;
+		tmp=map[j];
+		map[j]=map[c2];
+		map[c2]=tmp;
+		c2+=9;
+		
+		j=a*3+2+i*9;
+		tmp=map[j];
+		map[j]=map[c3];
+		map[c3]=tmp;
+		c3+=9;
 	}
-
-	c=b*3+1;
-	for(i=a*3+1;i<size;i+=9){
-		tmp=map[i];
-		map[i]=map[c];
-		map[c]=tmp;
-		c+=9;
-	}
-
-	c=b*3+2;
-	for(i=a*3+2;i<size;i+=9){
-		tmp=map[i];
-		map[i]=map[c];
-		map[c]=tmp;
-		c+=9;
-	}
-
 }
 
 void Sudoku::rotate(int n){
 	int i,j,k,a,b,c,d,tmp;
-	if(n%4==0){}
+	if(n%4==0){}	
 	else if(n%4==2){
 		for(i=0;i<40;++i){
 			j=80-i;
@@ -69,7 +67,6 @@ void Sudoku::rotate(int n){
 			map[i]=map[j];
 			map[j]=tmp;
 		}
-//		flip(0); flip(1);
 	}
 	else if(n%4==1){
 		k=7;
@@ -121,12 +118,6 @@ void Sudoku::flip(int n){
 	}
 }
 
-void Sudoku::printmap(){
-	for(int i=0;i<size;++i)
-		printf("%d%c",map[i],(i+1)%9==0?'\n':' ');
-
-}
-
 void Sudoku::transform(){
 	srand(time(NULL));
 	changeNum(rand()%9+1,rand()%9+1);
@@ -134,7 +125,9 @@ void Sudoku::transform(){
 	changeCol(rand()%3,rand()%3);
 	rotate(rand()%101);
 	flip(rand()%2);
-	printmap();
+
+	for(int i=0;i<size;++i)	
+		printf("%d%c",map[i],(i+1)%9==0?'\n':' ');
 }
 
 
@@ -159,13 +152,9 @@ void Sudoku::giveQuestion(){
 bool Sudoku::check(int& a,int& i){
 	int j,r,c,b,b1,b2,b3;
 	
-	//col
-	c=(a+1)%9-1;
-	if((a+1)%9==0) c=8;
-	
-	//row
-	r=((a+1)/9)*9;	
-	if((a+1)%9==0) r=r-9;
+	//col,row
+	c=a%9;
+	r=(a/9)*9;	
 	
 	//block
 	if((a+1)%9!=0 && (a+1)%9<4){		
@@ -180,7 +169,8 @@ bool Sudoku::check(int& a,int& i){
 	}else if((a+1)%9==0 || (a+1)%9<10){
 		if(a<27)	  b=6;
 		else if(a<54) b=33;
-		else if(a<81) b=60;
+		else if(a<81) 
+			b=60;
 	}
 	b1=b;
 	b2=b+9;
@@ -242,7 +232,7 @@ void Sudoku::backtrack(int& a){
 				}
 			}
 	
-			if(ch[in][i]!=0){
+			if(ch[in][i]!=0 && ch[in][i]!=map[in-1]){
 				if(check(in,i)){
 					backtrack(aa);
 				}

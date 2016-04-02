@@ -232,7 +232,7 @@ void Sudoku::backtrack(int& a){
 				}
 			}
 	
-			if(ch[in][i]!=0 && ch[in][i]!=map[in-1]){
+			if(ch[in][i]!=0){
 				if(check(in,i)){
 					backtrack(aa);
 				}

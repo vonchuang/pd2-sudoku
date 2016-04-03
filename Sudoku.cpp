@@ -190,8 +190,8 @@ bool Sudoku::check(int& a,int& i){
 		if(ch[a][i]==map[r]) return false;
 		++r;
 		if(ch[a][i]==map[b1]) return false;
-		if(ch[a][i]==map[b2]) return false;
 		if(ch[a][i]==map[b3]) return false;
+		if(ch[a][i]==map[b2]) return false;
 		b1++;
 		b2++;
 		b3++;
@@ -248,6 +248,7 @@ void Sudoku::solve(){
 	int f;
 	int i,j,tmp,t[10]={0},r,c,b;
 	int a[9]={1,2,3,4,5,6,7,8,9};
+	int flag=0,fgr[10]={0},fgc[10]={0},gr,gc,in[81]={0};
 	for(i=0;i<size;++i){
 		map2[i]=0;
 		ck[i]=0;
@@ -259,11 +260,8 @@ void Sudoku::solve(){
 	for(i=0;i<size;++i){
 		if(map[i]==0){
 			
-			c=(i+1)%9-1;	//check colume
-			if((i+1)%9==0) c=8;
-			
-			r=((i+1)/9)*9;	//check row
-			if((i+1)%9==0) r=r-9;
+			c=i%9;	//check colume	
+			r=(i/9)*9;	//check row
 			
 			for(j=0;j<9;++j){
 				//check col
@@ -330,46 +328,38 @@ void Sudoku::solve(){
 			}
 			//---------------------------------------------
 			for(j=0;j<10;++j)	t[j]=0;
-		}
-		else{ch[i].clear();}
-	}
-
-	for(i=0;i<size;++i){
-		if(!ch[i].empty()){
+		
 			for(j=ch[i].size();j>0;--j){
 				if(ch[i][j-1]==0) ch[i].erase(ch[i].begin()+j-1);
 			}
+
+			if(map[i]==0 && ch[i].empty()){
+				flag=1;
+				break;
+			}
+			else if(ch[i].size()==1){
+				map[i]=ch[i][0];
+				ch[i].clear();
+			}
 		}
-	}
-	
-	for(i=0;i<size;++i){
-		if(ch[i].size()==1){
-			map[i]=ch[i][0];
-			ch[i].clear();
-		}
+		else{ch[i].clear();}
 	}
 	//backtracking-------------------------------------
-	int flag=0,fgr[10]={0},fgc[10]={0},gr,gc,in[81]={0};
-
-	for(i=0;i<9;++i){	//check row and col----------------
-		for(j=0;j<9;++j){
-			gr=map[i*9+j];
-			gc=map[i+j*9];
-			if(gr!=0) fgr[gr]++;
-			if(fgr[gr]==2){ flag=1; break;}
-			if(gc!=0) fgc[gc]++;
-			if(fgc[gc]==2){ flag=1; break;}
-		}
-		for(j=0;j<10;++j){fgr[j]=0;  fgc[j]=0;}
-	}
-
-	for(i=0;i<size;i++){
-		if(map[i]==0 && ch[i].empty()) flag=1;
-	}
-
-	
 	if(flag==0){
-		
+		for(i=0;i<9;++i){	//check row and col----------------
+			for(j=0;j<9;++j){
+				gr=map[i*9+j];
+				gc=map[i+j*9];
+				if(gr!=0) fgr[gr]++;
+				if(fgr[gr]==2){ flag=1; break;}
+				if(gc!=0) fgc[gc]++;
+				if(fgc[gc]==2){ flag=1; break;}
+			}
+			for(j=0;j<10;++j){fgr[j]=0;  fgc[j]=0;}
+		}
+	}
+
+	if(flag==0){
 		for(i=0;i<10;++i){
 			for(j=0;j<size;++j){
 				if(in[j]==0 && ch[j].size()==i){

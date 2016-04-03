@@ -321,20 +321,6 @@ void Sudoku::solve(){
 	//backtracking-------------------------------------
 	while(chck!=0){	
 		chck=0;
-	/*	//===========================
-		for(i=0;i<size;++i){
-			if(ch[i].empty()) cout<<"0";
-			for(j=0;j<ch[i].size();++j){
-				cout<<ch[i][j];	
-			}	
-			printf("%c",(i+1)%9==0?'\n':' ');
-		}
-		cout<<endl;
-		for(i=0;i<size;++i)	
-			printf("%d%c",map[i],(i+1)%9==0?'\n':' ');
-		cout<<endl;
-		//=============================
-	*/	
 		for(i=0;i<size;++i){
 			if(map[i]==0){
 				if(ch[i].size()==1){
@@ -394,21 +380,6 @@ void Sudoku::solve(){
 				}
 			}
 		}
-	/*	
-		//===========================
-		for(i=0;i<size;++i){
-			if(ch[i].empty()) cout<<"0";
-			for(j=0;j<ch[i].size();++j){
-				cout<<ch[i][j];	
-			}	
-			printf("%c",(i+1)%9==0?'\n':' ');
-		}
-		cout<<endl;
-		for(i=0;i<size;++i)	
-			printf("%d%c",map[i],(i+1)%9==0?'\n':' ');
-		cout<<endl;
-		//=============================
-*/
 		for(i=0;i<9;++i){
 			for(j=0;j<10;++j){
 				col[i][j]=0; row[i][j]=0;

@@ -246,9 +246,9 @@ void Sudoku::backtrack(int& a){
 
 void Sudoku::solve(){
 	int f;
-	int i,j,tmp,t[10]={0},r,c,b;
+	int i,j,k,tmp,t[10]={0},r,c,b;
 	int a[9]={1,2,3,4,5,6,7,8,9};
-	int flag=0,fgr[10]={0},fgc[10]={0},gr,gc,in[81]={0};
+	int flag=0,fgr[10]={0},fgc[10]={0},fgb[10]={0},gr,gc,gb,in[81]={0};
 	for(i=0;i<size;++i){
 		map2[i]=0;
 		ck[i]=0;
@@ -356,6 +356,26 @@ void Sudoku::solve(){
 				if(fgc[gc]==2){ flag=1; break;}
 			}
 			for(j=0;j<10;++j){fgr[j]=0;  fgc[j]=0;}
+		}
+		for(i=0;i<size;i+=27){	//check block
+			for(j=0;j<9;j+=3){
+				for(k=(i+j);k<(i+j+3);++k){
+					gb=map[k];
+					if(gb!=0) fgb[gb]++;
+					if(fgb[gb]==2){flag=1; break;}
+				}
+				for(k=(i+j+9);k<(i+j+12);++k){
+					gb=map[k];
+					if(gb!=0) fgb[gb]++;
+					if(fgb[gb]==2){flag=1; break;}
+				}
+				for(k=(i+j+18);k<(i+j+21);++k){
+					gb=map[k];
+					if(gb!=0) fgb[gb]++;
+					if(fgb[gb]==2){flag=1; break;}
+				}
+				for(k=0;k<10;++k) fgb[k]=0;
+			}
 		}
 	}
 

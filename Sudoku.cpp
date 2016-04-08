@@ -253,9 +253,11 @@ void Sudoku::solve(){
 				tmp=map[c];
 				if(tmp!=0 && t[tmp]==0){
 					t[tmp]=1;
-					if(tmp!=9) ch[i].erase(ch[i].begin()+(tmp-1));
+					ch[i][tmp-1]=0;
+		/*			if(tmp!=9) ch[i].erase(ch[i].begin()+(tmp-1));
 					if(tmp==9) ch[i].pop_back();
 					ch[i].insert(ch[i].begin()+tmp-1,0);
+		*/
 				}
 				c+=9;
 
@@ -263,10 +265,11 @@ void Sudoku::solve(){
 				tmp=map[r];
 				if(tmp!=0 && t[tmp]==0){
 					t[tmp]=1;
-					if(tmp==9) ch[i].pop_back();
+					ch[i][tmp-1]=0;
+/*					if(tmp==9) ch[i].pop_back();
 					if(tmp!=9) ch[i].erase(ch[i].begin()+(tmp-1));
 					ch[i].insert(ch[i].begin()+tmp-1,0);
-				}
+*/				}
 				++r;
 			}
 			//-----------------------------------------
@@ -275,28 +278,31 @@ void Sudoku::solve(){
 				tmp=map[j];
 				if(tmp!=0 && t[tmp]==0){
 					t[tmp]=1;
-					if(tmp==9) ch[i].pop_back();
+					ch[i][tmp-1]=0;
+/*					if(tmp==9) ch[i].pop_back();
 					if(tmp!=9) ch[i].erase(ch[i].begin()+tmp-1);
 					ch[i].insert(ch[i].begin()+tmp-1,0);
-				}
+*/				}
 			}
 			for(j=(b+9);j<(b+12);++j){
 				tmp=map[j];
 				if(tmp!=0 && t[tmp]==0){
 					t[tmp]=1;
-					if(tmp==9) ch[i].pop_back();
+					ch[i][tmp-1]=0;
+/*					if(tmp==9) ch[i].pop_back();
 					if(tmp!=9) ch[i].erase(ch[i].begin()+tmp-1);
 					ch[i].insert(ch[i].begin()+tmp-1,0);
-				}
+*/				}
 			}
 			for(j=(b+18);j<(b+21);++j){
 				tmp=map[j];
 				if(tmp!=0 && t[tmp]==0){
 					t[tmp]=1;
-					if(tmp==9) ch[i].pop_back();
+					ch[i][tmp-1]=0;
+/*					if(tmp==9) ch[i].pop_back();
 					if(tmp!=9) ch[i].erase(ch[i].begin()+tmp-1);
 					ch[i].insert(ch[i].begin()+tmp-1,0);
-				}
+*/				}
 			}
 			//---------------------------------------------
 			for(j=0;j<10;++j)	t[j]=0;
